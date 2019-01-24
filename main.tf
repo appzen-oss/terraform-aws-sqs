@@ -48,7 +48,17 @@ resource "aws_sqs_queue" "queue_deadletter" {
 }
 
 resource "aws_sqs_queue" "queue" {
-  count                      = "${module.enable.value ? length(module.labels.id) : 0}"
+  count                      = "${module.enable.value && ! module.enable_dlq.value ? length(module.labels.id) : 0}"
+  name                       = "${module.labels.id[count.index]}"
+  delay_seconds              = "${var.delay_seconds}"
+  max_message_size           = "${var.max_message_size}"
+  message_retention_seconds  = "${var.message_retention_seconds}"
+  visibility_timeout_seconds = "${var.visibility_timeout_seconds}"
+  tags                       = "${module.labels.tags[count.index]}"
+}
+
+resource "aws_sqs_queue" "queue_with_dlq" {
+  count                      = "${module.enable.value && module.enable_dlq.value ? length(module.labels.id) : 0}"
   name                       = "${module.labels.id[count.index]}"
   delay_seconds              = "${var.delay_seconds}"
   max_message_size           = "${var.max_message_size}"
