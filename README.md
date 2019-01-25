@@ -49,6 +49,13 @@ module "" {
 | team | TAG: Department/team of people responsible for service | string | `"UNDEF-SQS"` | no |
 | visibility\_timeout\_seconds | The visibility timeout for the queue | string | `"600"` | no |
 
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| deadletter\_queues |  |
+| queues |  |
+
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM GRAPH HOOK -->
 
