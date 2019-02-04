@@ -1,7 +1,19 @@
 output "deadletter_queues" {
-  value = "${compact(concat(aws_sqs_queue.queue_deadletter.*.id, list("")))}"
+  description = "Dead letter queue URLs"
+  value       = "${compact(concat(aws_sqs_queue.queue_deadletter.*.id, list("")))}"
+}
+
+output "queue_names" {
+  description = "Queue full names. Use for looking up queue ID"
+  value       = "${module.labels.id}"
+}
+
+output "queue_name_bases" {
+  description = "Queue base names. Use for looking up queue ID"
+  value       = "${var.sqs_queues}"
 }
 
 output "queues" {
-  value = "${compact(concat(aws_sqs_queue.queue.*.id, aws_sqs_queue.queue_with_dlq.*.id, list("")))}"
+  description = "Queue URLs"
+  value       = "${compact(concat(aws_sqs_queue.queue.*.id, aws_sqs_queue.queue_with_dlq.*.id, list("")))}"
 }

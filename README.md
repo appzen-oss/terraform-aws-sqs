@@ -53,8 +53,10 @@ module "" {
 
 | Name | Description |
 |------|-------------|
-| deadletter\_queues |  |
-| queues |  |
+| deadletter\_queues | Dead letter queue URLs |
+| queue\_name\_bases | Queue base names. Use for looking up queue ID |
+| queue\_names | Queue full names. Use for looking up queue ID |
+| queues | Queue URLs |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM GRAPH HOOK -->

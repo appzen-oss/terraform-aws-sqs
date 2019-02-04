@@ -22,6 +22,8 @@ Note that this example may create resources which cost money. Run `terraform des
 | Name | Description |
 |------|-------------|
 | deadletter\_queues |  |
+| queue\_name\_bases |  |
+| queue\_names |  |
 | queues |  |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
