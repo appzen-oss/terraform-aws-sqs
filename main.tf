@@ -65,5 +65,5 @@ resource "aws_sqs_queue" "queue_with_dlq" {
   message_retention_seconds  = "${var.message_retention_seconds}"
   visibility_timeout_seconds = "${var.visibility_timeout_seconds}"
   tags                       = "${module.labels.tags[count.index]}"
-  redrive_policy             = "{\"deadLetterTargetArn\":\"${element(aws_sqs_queue.queue_deadletter.*.arn, count.index)}\",\"maxReceiveCount\":20}"
+  redrive_policy             = "{\"deadLetterTargetArn\":\"${element(aws_sqs_queue.queue_deadletter.*.arn, count.index)}\",\"maxReceiveCount\":\"${var.max_receive_count}\"}"
 }

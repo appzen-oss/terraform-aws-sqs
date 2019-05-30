@@ -124,6 +124,11 @@ variable "max_message_size" {
   default     = "262144"
 }
 
+variable "max_receive_count" {
+  description = ""
+  default     = "20"
+}
+
 variable "message_retention_seconds" {
   description = "The number of seconds Amazon SQS retains a message"
   default     = "1209600"
