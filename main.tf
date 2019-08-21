@@ -13,6 +13,12 @@ module "enable_dlq" {
   value   = "${var.enable_dlq}"
 }
 
+module "dlq_only" {
+  source  = "devops-workflow/boolean/local"
+  version = "0.1.2"
+  value   = "${var.dlq_only}"
+}
+
 module "labels" {
   source        = "appzen-oss/labels/null"
   version       = "0.2.0"
@@ -34,7 +40,7 @@ module "labels" {
 }
 
 resource "aws_sqs_queue" "queue_deadletter" {
-  count                      = "${module.enable.value && module.enable_dlq.value ? length(module.labels.id) : 0}"
+  count                      = "${module.enable.value && module.enable_dlq.value && (var.dlq_arn == "" || module.dlq_only.value) ? length(module.labels.id) : 0}"
   name                       = "${module.labels.id[count.index]}-dlq"
   delay_seconds              = "${var.dlq_delay_seconds != "" ? var.dlq_delay_seconds : var.delay_seconds}"
   max_message_size           = "${var.dlq_max_message_size != "" ? var.dlq_max_message_size : var.max_message_size}"
@@ -58,12 +64,12 @@ resource "aws_sqs_queue" "queue" {
 }
 
 resource "aws_sqs_queue" "queue_with_dlq" {
-  count                      = "${module.enable.value && module.enable_dlq.value ? length(module.labels.id) : 0}"
+  count                      = "${module.enable.value && module.enable_dlq.value && ! module.dlq_only.value ? length(module.labels.id) : 0}"
   name                       = "${module.labels.id[count.index]}"
   delay_seconds              = "${var.delay_seconds}"
   max_message_size           = "${var.max_message_size}"
   message_retention_seconds  = "${var.message_retention_seconds}"
   visibility_timeout_seconds = "${var.visibility_timeout_seconds}"
   tags                       = "${module.labels.tags[count.index]}"
-  redrive_policy             = "{\"deadLetterTargetArn\":\"${element(aws_sqs_queue.queue_deadletter.*.arn, count.index)}\",\"maxReceiveCount\":${var.max_receive_count}}"
+  redrive_policy             = "{\"deadLetterTargetArn\":\"${var.dlq_arn != "" ? var.dlq_arn : element(concat(aws_sqs_queue.queue_deadletter.*.arn, list("")), count.index)}\",\"maxReceiveCount\":${var.max_receive_count}}"
 }

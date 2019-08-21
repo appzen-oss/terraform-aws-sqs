@@ -2,6 +2,15 @@ output "deadletter_queues" {
   description = "Dead letter queue URLs"
   value       = "${compact(concat(aws_sqs_queue.queue_deadletter.*.id, list("")))}"
 }
+output "deadletter_queues_arns" {
+  description = "Dead letter queue ARNs"
+  value       = "${compact(concat(aws_sqs_queue.queue_deadletter.*.arn, list("")))}"
+}
+
+output "queue_arns" {
+  description = "Queue ARNs"
+  value = "${compact(concat(aws_sqs_queue.queue.*.arn, list("")))}"
+}
 
 output "queue_names" {
   description = "Queue full names. Use for looking up queue ID"
