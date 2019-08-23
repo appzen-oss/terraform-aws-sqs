@@ -103,7 +103,6 @@ variable "dlq_arn" {
   description = "Override DLQ with an existing DLQ"
   default     = ""
 }
-
 variable "dlq_delay_seconds" {
   description = "Dead letter queue: The time in seconds that the delivery of all messages in the queue will be delayed"
   default     = ""
@@ -122,6 +121,14 @@ variable "dlq_message_retention_seconds" {
 variable "dlq_only" {
   description = "Only create DLQ"
   default     = false
+}
+variable "dlq_policy" {
+  description = "DLQ IAM Policy"
+  default     = ""
+}
+variable "dlq_receive_wait_time_seconds" {
+  description = "The time for which a ReceiveMessage call will wait for a message to arrive (long polling) before returning"
+  default     = "20"
 }
 
 variable "dlq_visibility_timeout_seconds" {
@@ -142,6 +149,14 @@ variable "max_receive_count" {
 variable "message_retention_seconds" {
   description = "The number of seconds Amazon SQS retains a message"
   default     = "1209600"
+}
+variable "policy" {
+  description = "Queue IAM Policy"
+  default     = ""
+}
+variable "receive_wait_time_seconds" {
+  description = "The time for which a ReceiveMessage call will wait for a message to arrive (long polling) before returning"
+  default     = "20"
 }
 
 variable "visibility_timeout_seconds" {

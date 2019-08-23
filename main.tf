@@ -39,12 +39,18 @@ module "labels" {
   team          = "${var.team}"
 }
 
+# TODO: add KMS support $$
+#     kms_master_key_id                 = "alias/aws/xxx"
+#     kms_data_key_reuse_period_seconds = 300 (60 - 86400)
+
 resource "aws_sqs_queue" "queue_deadletter" {
   count                      = "${module.enable.value && module.enable_dlq.value && (var.dlq_arn == "" || module.dlq_only.value) ? length(module.labels.id) : 0}"
   name                       = "${module.labels.id[count.index]}-dlq"
   delay_seconds              = "${var.dlq_delay_seconds != "" ? var.dlq_delay_seconds : var.delay_seconds}"
   max_message_size           = "${var.dlq_max_message_size != "" ? var.dlq_max_message_size : var.max_message_size}"
   message_retention_seconds  = "${var.dlq_message_retention_seconds != "" ? var.dlq_message_retention_seconds : var.message_retention_seconds}"
+  policy                     = "${var.dlq_policy != "" ? var.dlq_policy : var.policy}"
+  receive_wait_time_seconds  = "${var.dlq_receive_wait_time_seconds != "" ? var.dlq_receive_wait_time_seconds : var.receive_wait_time_seconds}"
   visibility_timeout_seconds = "${var.dlq_visibility_timeout_seconds != "" ? var.dlq_visibility_timeout_seconds : var.visibility_timeout_seconds}"
 
   tags = "${merge(
@@ -59,6 +65,8 @@ resource "aws_sqs_queue" "queue" {
   delay_seconds              = "${var.delay_seconds}"
   max_message_size           = "${var.max_message_size}"
   message_retention_seconds  = "${var.message_retention_seconds}"
+  policy                     = "${var.policy}"
+  receive_wait_time_seconds  = "${var.receive_wait_time_seconds}"
   visibility_timeout_seconds = "${var.visibility_timeout_seconds}"
   tags                       = "${module.labels.tags[count.index]}"
 }
@@ -69,6 +77,8 @@ resource "aws_sqs_queue" "queue_with_dlq" {
   delay_seconds              = "${var.delay_seconds}"
   max_message_size           = "${var.max_message_size}"
   message_retention_seconds  = "${var.message_retention_seconds}"
+  policy                     = "${var.policy}"
+  receive_wait_time_seconds  = "${var.receive_wait_time_seconds}"
   visibility_timeout_seconds = "${var.visibility_timeout_seconds}"
   tags                       = "${module.labels.tags[count.index]}"
   redrive_policy             = "{\"deadLetterTargetArn\":\"${var.dlq_arn != "" ? var.dlq_arn : element(concat(aws_sqs_queue.queue_deadletter.*.arn, list("")), count.index)}\",\"maxReceiveCount\":${var.max_receive_count}}"
