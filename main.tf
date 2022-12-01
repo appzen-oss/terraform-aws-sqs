@@ -52,6 +52,7 @@ resource "aws_sqs_queue" "queue_deadletter" {
   policy                     = "${var.dlq_policy != "" ? var.dlq_policy : var.policy}"
   receive_wait_time_seconds  = "${var.dlq_receive_wait_time_seconds != "" ? var.dlq_receive_wait_time_seconds : var.receive_wait_time_seconds}"
   visibility_timeout_seconds = "${var.dlq_visibility_timeout_seconds != "" ? var.dlq_visibility_timeout_seconds : var.visibility_timeout_seconds}"
+  sqs_managed_sse_enabled    = "${var.sqs_managed_sse_enabled}"
 
   tags = "${merge(
     module.labels.tags[count.index],
@@ -68,6 +69,7 @@ resource "aws_sqs_queue" "queue" {
   policy                     = "${var.policy}"
   receive_wait_time_seconds  = "${var.receive_wait_time_seconds}"
   visibility_timeout_seconds = "${var.visibility_timeout_seconds}"
+  sqs_managed_sse_enabled    = "${var.sqs_managed_sse_enabled}"
   tags                       = "${module.labels.tags[count.index]}"
 }
 
@@ -80,6 +82,7 @@ resource "aws_sqs_queue" "queue_with_dlq" {
   policy                     = "${var.policy}"
   receive_wait_time_seconds  = "${var.receive_wait_time_seconds}"
   visibility_timeout_seconds = "${var.visibility_timeout_seconds}"
+  sqs_managed_sse_enabled    = "${var.sqs_managed_sse_enabled}"
   tags                       = "${module.labels.tags[count.index]}"
   redrive_policy             = "{\"deadLetterTargetArn\":\"${var.dlq_arn != "" ? var.dlq_arn : element(concat(aws_sqs_queue.queue_deadletter.*.arn, list("")), count.index)}\",\"maxReceiveCount\":${var.max_receive_count}}"
 }

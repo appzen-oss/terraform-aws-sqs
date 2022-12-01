@@ -163,3 +163,8 @@ variable "visibility_timeout_seconds" {
   description = "The visibility timeout for the queue"
   default     = "600"
 }
+
+variable "sqs_managed_sse_enabled" {
+  description = "Server side encryption default to true"
+  default     = "true"
+}
