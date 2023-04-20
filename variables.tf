@@ -94,6 +94,11 @@ variable "enable_dlq" {
   default     = true
 }
 
+variable "sqs_managed_sse_enabled" {
+  description = "Encrypt SQS"
+  default     = true
+}
+
 variable "delay_seconds" {
   description = "The time in seconds that the delivery of all messages in the queue will be delayed"
   default     = "0"
