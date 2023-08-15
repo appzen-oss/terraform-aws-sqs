@@ -3,30 +3,30 @@
 //
 variable "attributes" {
   description = "Suffix name with additional attributes (policy, role, etc.)"
-  type        = "list"
+  type        = list
   default     = []
 }
 
 variable "component" {
   description = "TAG: Underlying, dedicated piece of service (Cache, DB, ...)"
-  type        = "string"
+  type        = string
   default     = "UNDEF-SQS"
 }
 
 variable "delimiter" {
   description = "Delimiter to be used between `name`, `namespaces`, `attributes`, etc."
-  type        = "string"
+  type        = string
   default     = "-"
 }
 
 variable "environment" {
   description = "Environment (ex: `dev`, `qa`, `stage`, `prod`). (Second or top level namespace. Depending on namespacing options)"
-  type        = "string"
+  type        = string
 }
 
 variable "monitor" {
   description = "TAG: Should resource be monitored"
-  type        = "string"
+  type        = string
   default     = "UNDEF-SQS"
 }
 
@@ -42,66 +42,70 @@ variable "namespace-org" {
 
 variable "organization" {
   description = "Organization name (Top level namespace)"
-  type        = "string"
+  type        = string
   default     = ""
 }
 
 variable "owner" {
   description = "TAG: Owner of the service"
-  type        = "string"
+  type        = string
   default     = "UNDEF-SQS"
 }
 
 variable "product" {
   description = "TAG: Company/business product"
-  type        = "string"
+  type        = string
   default     = "UNDEF-SQS"
 }
 
 variable "service" {
   description = "TAG: Application (microservice) name"
-  type        = "string"
+  type        = string
   default     = "UNDEF-SQS"
 }
 
 variable "tags" {
   description = "A map of additional tags"
-  type        = "map"
+  type        = map
   default     = {}
 }
 
 variable "team" {
   description = "TAG: Department/team of people responsible for service"
-  type        = "string"
+  type        = string
   default     = "UNDEF-SQS"
 }
 
 //
 // SQS Variables
 //
-variable "enable" {
-  description = "Set to false to prevent the module from creating anything"
-  default     = true
-}
-
 variable "sqs_queues" {
   description = "List of SQS queue base names"
-  type        = "list"
+  type        = list
+}
+
+variable "enable" {
+  description = "Set to false to prevent the module from creating anything"
+  type        = bool
+  default     = true
 }
 
 variable "enable_dlq" {
   description = "Setup dead letter queue"
+  type        = bool
   default     = true
 }
 
 variable "sqs_managed_sse_enabled" {
   description = "Encrypt SQS"
+  type        = bool
   default     = true
 }
 
 variable "delay_seconds" {
   description = "The time in seconds that the delivery of all messages in the queue will be delayed"
-  default     = "0"
+  type        = number
+  default     = 0
 }
 
 variable "dlq_arn" {
@@ -125,6 +129,7 @@ variable "dlq_message_retention_seconds" {
 
 variable "dlq_only" {
   description = "Only create DLQ"
+  type        = bool
   default     = false
 }
 variable "dlq_policy" {

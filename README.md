@@ -58,6 +58,12 @@ module "" {
 | queue\_names | Queue full names. Use for looking up queue ID |
 | queues | Queue URLs |
 
+## Requirements
+
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.12 |
+
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM GRAPH HOOK -->
 
